@@ -49,20 +49,25 @@ Now Time to create Security Group:
 ----------------------------------
 
 Create 2 Security Groups: One for LB and other for EC2 instances
+
 ![image](https://user-images.githubusercontent.com/67804886/166088721-36234d52-d679-47df-b177-28b02ad7645d.png)
 
 Check the details as to which ports and connections to open and which traffic to allow
 
 For LB Security Group Inbound Rule:
+
 ![image](https://user-images.githubusercontent.com/67804886/166088804-56c3ed73-b3dd-4f61-b898-7a440a19cb76.png)
 
 For LB Security Group Outbound Rule:
+
 ![image](https://user-images.githubusercontent.com/67804886/166088844-6f5a5b53-e018-44f5-bc56-d4c31fafa3ff.png)
 
 For EC2 Security Group Inbound Rule:
+
 ![image](https://user-images.githubusercontent.com/67804886/166088935-6f2ebd5c-5a6f-4725-b97c-e1a1c576bab3.png)
 
 For EC2 Security Group Outbound Rule:
+
 ![image](https://user-images.githubusercontent.com/67804886/166088972-7f761da4-2243-4dc9-9b9b-f5c5281391a1.png)
 
 
@@ -78,8 +83,8 @@ Create Internet Gateway
 aws ec2 create-internet-gateway --tag-specifications ResourceType=internet-gateway,Tags='[{Key=Name,Value=MYigw}]'
 
 -------------------------------
-# "InternetGatewayId": "igw-0e4bd912f5f5b0513"
-# "OwnerId": "493795442439"
+"InternetGatewayId": "igw-0e4bd912f5f5b0513"
+"OwnerId": "493795442439"
 
 
 Attach Internet Gateway
@@ -99,23 +104,29 @@ Now time to create Route Table:-
 --------------------------------
 
 Create two Route Tables: One for Public Route Table and one for Private Route Table
+
 ![image](https://user-images.githubusercontent.com/67804886/166089100-9089c799-9def-424d-8c1f-a0743de19f8c.png)
 
 Public Route Table (Should always be configured with Internet Gateway):-
+
 ![image](https://user-images.githubusercontent.com/67804886/166089195-dabed308-6950-4ec0-9c36-f487671c283d.png)
 
 Subnet which u want to face to the internet:-
+
 ![image](https://user-images.githubusercontent.com/67804886/166089229-622d028b-4bfd-44c2-9674-9189038f23f5.png)
 
 Private Route Table (Don't attach with Internet Gateway):-
+
 ![image](https://user-images.githubusercontent.com/67804886/166089320-9006258f-b71c-47bb-a4a6-06415174aa8f.png)
 
 Note For Private RT:-
 ---------------------
 If u want connect connect Private EC2 instances in Private subnet to Internet, then use NAT Gateway......Remember only when the EC2 instances need to download files or connect to internet.....otherwise no need.
+
 ![image](https://user-images.githubusercontent.com/67804886/166089379-f021742a-4b89-4802-8746-48da1f2c23d8.png)
 
 Subnet Associations:- 
+
 ![image](https://user-images.githubusercontent.com/67804886/166089448-aec1d63d-055b-4272-844a-f2b7ccb822dd.png)
 
 
@@ -143,13 +154,13 @@ Make a note of key pair => oregon
 aws ec2 run-instances --image-id 'ami-074251216af698218' --instance-type 't2.micro' --key-name 'oregon' --security-group-ids 'sg-028c38c0f32289201' --no-associate-public-ip-address --subnet-id "subnet-07b9f037b2a82a1d5"
 
 -----------------------------
-# Note down instance id:- "i-063a786897f602c16"
+Note down instance id:- "i-063a786897f602c16"
 
 --------------------------------
 aws ec2 run-instances --image-id 'ami-074251216af698218' --instance-type 't2.micro' --key-name 'oregon' --security-group-ids 'sg-028c38c0f32289201' --no-associate-public-ip-address --subnet-id "subnet-00e1ade1f9d65e8c0"
 
 ---------------------------------
-# Note down instance id:-  "i-084b27e07ceea9e13"
+Note down instance id:-  "i-084b27e07ceea9e13"
 
 
 
@@ -175,7 +186,7 @@ Create Load Balancer (Classic LB)
 aws elb create-load-balancer --load-balancer-name proTaskLB --listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" --subnets subnet-07b9f037b2a82a1d5 subnet-0aa0ca4551edf3709 --security-groups "sg-03a4e915c2ee125a5"
 
 -----------------------------------------
-# "DNSName": "proTaskLB-842445010.us-west-2.elb.amazonaws.com"
+#"DNSName": "proTaskLB-842445010.us-west-2.elb.amazonaws.com"
 
 
 Configure-health-check of Load Balancer (Classic LB)
@@ -184,6 +195,7 @@ Configure-health-check of Load Balancer (Classic LB)
 aws elb configure-health-check --load-balancer-name proTaskLB --health-check Target=HTTP:80/,Interval=6,UnhealthyThreshold=2,HealthyThreshold=2,Timeout=3
 
 ----------------------------------
+
 Output:-
 ---------
 {
@@ -209,6 +221,7 @@ aws elb register-instances-with-load-balancer --load-balancer-name proTaskLB --i
 
 Now Configure Target Group (Application LB):
 -------------------------------------------
+
 ![image](https://user-images.githubusercontent.com/67804886/166089975-04b40466-d946-46c3-89bb-d7073ac5f637.png)
 
 
