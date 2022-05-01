@@ -234,6 +234,16 @@ Note down the Load Balancer DNS name and go to browser and enter the DNS name.
 
 
 
+JMES PATH:--
+--------------
+
+
+NOTE IT DOWN
+
+
+
+
+
 
 
 
